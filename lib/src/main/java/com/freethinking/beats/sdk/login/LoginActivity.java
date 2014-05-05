@@ -49,7 +49,7 @@ public class LoginActivity extends Activity {
                     String state = uri.getQueryParameter("state");
                     String scope = uri.getQueryParameter("scope");
 
-                    String preferencesKey = getString(R.string.user_preferences_key);
+                    String preferencesKey = "beats_sdk_user";
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("access_code", code).commit();
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("user_state", state).commit();
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("access_code_scope", scope).commit();
@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
     }
 
     public void completeSignIn() {
-        Toast.makeText(this, getString(R.string.login_welcome), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Welcome to Music Flow", Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -86,7 +86,7 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            String preferencesKey = getString(R.string.user_preferences_key);
+            String preferencesKey = "beats_sdk_user";
             getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("user_id", me.getResult().getUserContext()).commit();
             completeSignIn();
         }
@@ -102,7 +102,7 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            String preferencesKey = getString(R.string.user_preferences_key);
+            String preferencesKey = "beats_sdk_user";
             getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("access_token", authorization.getResult().getAccessToken()).commit();
             getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("refresh_token", authorization.getResult().getRefreshToken()).commit();
             getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putLong("access_expires_at", System.currentTimeMillis() + (1000 * authorization.getResult().getExpiresIn())).commit();

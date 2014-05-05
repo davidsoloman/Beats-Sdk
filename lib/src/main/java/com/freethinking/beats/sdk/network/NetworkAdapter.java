@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.freethinking.beats.sdk.R;
 import com.freethinking.beats.sdk.data.Authorization;
 import com.freethinking.beats.sdk.data.AuthorizationRequest;
 import com.freethinking.beats.sdk.data.BaseJson;
@@ -107,7 +106,7 @@ public class NetworkAdapter extends AsyncTask<String, Void, String> {
 
             authorization.fillIn(new AuthorizationMapper().parseJson(responseString));
 
-            String preferencesKey = context.getString(R.string.user_preferences_key);
+            String preferencesKey = "beats_sdk_user";
             context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).edit().putString("access_token", authorization.getResult().getAccessToken()).commit();
             context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).edit().putString("refresh_token", authorization.getResult().getRefreshToken()).commit();
             context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).edit().putLong("access_expires_at", System.currentTimeMillis() + (1000 * authorization.getResult().getExpiresIn())).commit();
@@ -133,7 +132,7 @@ public class NetworkAdapter extends AsyncTask<String, Void, String> {
             HttpResponse response;
 
             if (authRequired()) {
-                String preferencesKey = context.getString(R.string.user_preferences_key);
+                String preferencesKey = "beats_sdk_user";
                 Long accessExpires = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getLong("access_expires_at", System.currentTimeMillis());
                 if (accessExpires < System.currentTimeMillis()) {
                     String code = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("refresh_token", "");

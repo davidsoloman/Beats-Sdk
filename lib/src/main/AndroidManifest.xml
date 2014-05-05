@@ -2,7 +2,7 @@
     package="com.freethinking.beats.sdk">
 
     <application android:allowBackup="true"
-        android:label="@string/app_name"
+        android:label="Beats SDK"
         android:icon="@drawable/ic_launcher"
 >
 

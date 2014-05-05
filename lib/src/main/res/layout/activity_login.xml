@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:gravity="center"
-            android:text="@string/login_header_text"
+            android:text="Log in to Beats Music"
             android:textAllCaps="true"
             android:textColor="#ffffffff"
             android:textSize="@dimen/abc_action_bar_title_text_size"

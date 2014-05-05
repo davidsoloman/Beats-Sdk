@@ -1,6 +1,2 @@
 <resources>
-    <string name="app_name">Beats SDK</string>
-    <string name="user_preferences_key">beats_sdk_user</string>
-    <string name="login_header_text">Log in to Beats Music</string>
-    <string name="login_welcome">Welcome to Music Flow</string>
 </resources>
