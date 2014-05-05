@@ -37,6 +37,13 @@ public class NetworkAdapter extends AsyncTask<String, Void, String> {
     protected BaseJson json;
     protected StringEntity body;
     protected Context context;
+
+    public static Boolean loggedIn(Context context) {
+        String preferencesKey = "beats_sdk_user";
+        String accessToken = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("access_token", null);
+        return accessToken != null;
+    }
+
     public NetworkAdapter(Context context, CommonMapper mapper, RequestType type, Map<String, String> headers, BaseJson json) {
         super();
         this.mapper = mapper;
