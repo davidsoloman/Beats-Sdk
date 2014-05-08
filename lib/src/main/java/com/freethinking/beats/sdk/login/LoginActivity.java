@@ -2,6 +2,7 @@ package com.freethinking.beats.sdk.login;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -39,9 +40,7 @@ public class LoginActivity extends Activity {
         webView = (WebView) findViewById(R.id.activity_login_web_view);
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description,
-                                        String failingUrl) {
-
-            }
+                                        String failingUrl) { }
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("musicflow") && url.contains("code")) {
@@ -70,6 +69,16 @@ public class LoginActivity extends Activity {
 
     public void completeSignIn() {
         Toast.makeText(this, "Welcome to Music Flow", Toast.LENGTH_SHORT).show();
+        Intent returnIntent = new Intent();
+        String preferencesKey = "beats_sdk_user";
+        returnIntent.putExtra("access_code", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("access_code", ""));
+        returnIntent.putExtra("user_state", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("user_state", ""));
+        returnIntent.putExtra("access_code_scope", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("access_code_scope", ""));
+        returnIntent.putExtra("access_token", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("access_token", ""));
+        returnIntent.putExtra("refresh_token", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("refresh_token", ""));
+        returnIntent.putExtra("access_expires_at", getSharedPreferences(preferencesKey, MODE_PRIVATE).getLong("access_expires_at", System.currentTimeMillis()));
+        returnIntent.putExtra("user_id", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("user_id", ""));
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 
