@@ -15,6 +15,7 @@ import com.freethinking.beats.sdk.data.Me;
 import com.freethinking.beats.sdk.mappers.AuthorizationMapper;
 import com.freethinking.beats.sdk.mappers.MeMapper;
 import com.freethinking.beats.sdk.network.NetworkAdapter;
+import com.freethinking.beats.sdk.network.NetworkParts;
 import com.freethinking.beats.sdk.network.UrlFactory;
 
 import java.util.HashMap;
@@ -75,7 +76,7 @@ public class LoginActivity extends Activity {
     protected class MeNetworkRequest extends NetworkAdapter {
 
         public MeNetworkRequest(Context context) {
-            super(context, new MeMapper(), NetworkAdapter.RequestType.GET, new HashMap<String, String>(), me);
+            super(context, new MeMapper(), NetworkParts.RequestType.GET, new HashMap<String, String>(), me);
         }
 
         @Override
@@ -95,7 +96,7 @@ public class LoginActivity extends Activity {
     protected class AuthNetworkRequest extends NetworkAdapter {
 
         public AuthNetworkRequest(Context context, AuthorizationRequest body) {
-            super(context, new AuthorizationMapper(), NetworkAdapter.RequestType.POST, new HashMap<String, String>(), body, authorization);
+            super(context, new AuthorizationMapper(), NetworkParts.RequestType.POST, new HashMap<String, String>(), body, authorization);
         }
 
         @Override
