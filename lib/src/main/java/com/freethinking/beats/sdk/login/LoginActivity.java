@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("user_state", state).commit();
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("access_code_scope", scope).commit();
 
-                    AuthorizationRequest body = new AuthorizationRequest(UrlFactory.clientSecret(), UrlFactory.clientID(), "http://www.musicflow.com", code, "authorization_code", false);
+                    AuthorizationRequest body = new AuthorizationRequest(UrlFactory.clientSecret(getApplicationContext()), UrlFactory.clientID(getApplicationContext()), "http://www.musicflow.com", code, "authorization_code", false);
 
                     authNetworkRequest = new AuthNetworkRequest(getApplicationContext(), body);
                     authNetworkRequest.execute(UrlFactory.obtainToken());
@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
                 }
             }
         });
-        webView.loadUrl("https://partner.api.beatsmusic.com/v1/oauth2/authorize?response_type=code&redirect_uri=http%3A%2F%2Fwww.musicflow.com&client_id=" + UrlFactory.clientID());
+        webView.loadUrl("https://partner.api.beatsmusic.com/v1/oauth2/authorize?response_type=code&redirect_uri=http%3A%2F%2Fwww.musicflow.com&client_id=" + UrlFactory.clientID(this));
     }
 
     public void completeSignIn() {

@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-/**
- * Created by dsabin on 5/7/14.
- */
 public class NetworkParts {
 
     public enum RequestType {
@@ -168,7 +165,7 @@ public class NetworkParts {
                 Long accessExpires = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getLong("access_expires_at", System.currentTimeMillis());
                 if (accessExpires < System.currentTimeMillis()) {
                     String code = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("refresh_token", "");
-                    AuthorizationRequest body = new AuthorizationRequest(UrlFactory.clientSecret(), UrlFactory.clientID(), "http://www.musicflow.com", code, "refresh_token", true);
+                    AuthorizationRequest body = new AuthorizationRequest(UrlFactory.clientSecret(context), UrlFactory.clientID(context), "http://www.musicflow.com", code, "refresh_token", true);
                     makeRefreshRequest(body);
                 }
 
@@ -236,5 +233,26 @@ public class NetworkParts {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Boolean loggedIn(Context context) {
+        String preferencesKey = "beats_sdk_user";
+        String accessToken = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("access_token", null);
+        return accessToken != null;
+    }
+
+    public static String userId(Context context) {
+        String preferencesKey = "beats_sdk_user";
+        return context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("user_id", null);
+    }
+
+    public static String accessToken(Context context) {
+        String preferencesKey = "beats_sdk_user";
+        return context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("access_token", null);
+    }
+
+    public static String refreshToken(Context context) {
+        String preferencesKey = "beats_sdk_user";
+        return context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getString("refresh_token", null);
     }
 }

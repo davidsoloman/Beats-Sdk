@@ -1,6 +1,9 @@
 package com.freethinking.beats.sdk.network;
 
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import java.util.HashMap;
@@ -19,13 +22,31 @@ public class UrlFactory {
     public final String[] IDS_DEFAULT = new String[0];
 
     @SuppressWarnings("SpellCheckingInspection")
-    public static String clientID() {
-        return "frksnm8edw2t8ddebhkqkjwk";
+    public static String clientID(Context context) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return ai.metaData.getString("com.freethinking.beats.sdk.id");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    public static String clientSecret() {
-        return "2vZyUjhnmgqpVRmkNYKuw285";
+    public static String clientSecret(Context context) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return ai.metaData.getString("com.freethinking.beats.sdk.secret");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // Requires Auth
@@ -43,143 +64,143 @@ public class UrlFactory {
         return BASE_URL + "/api/users/" + id;
     }
 
-    public static String artistList() {
-        return BASE_URL + "/api/artists" + "?client_id=" + clientID();
+    public static String artistList(Context context) {
+        return BASE_URL + "/api/artists" + "?client_id=" + clientID(context);
     }
 
-    public static String artistList(CollectionQueryParams params) {
-        return BASE_URL + "/api/artists" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artistList(Context context, CollectionQueryParams params) {
+        return BASE_URL + "/api/artists" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String artist(String id) {
-        return BASE_URL + "/api/artists/" + id + "?client_id=" + clientID();
+    public static String artist(Context context, String id) {
+        return BASE_URL + "/api/artists/" + id + "?client_id=" + clientID(context);
     }
 
-    public static String artist(String id, LookupQueryParams params) {
-        return BASE_URL + "/api/artists/" + id + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artist(Context context, String id, LookupQueryParams params) {
+        return BASE_URL + "/api/artists/" + id + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String artistBio(String id) {
-        return BASE_URL + "/api/artists/" + id + "/bios" + "?client_id=" + clientID();
+    public static String artistBio(Context context, String id) {
+        return BASE_URL + "/api/artists/" + id + "/bios" + "?client_id=" + clientID(context);
     }
 
-    public static String artistBio(String id, LookupQueryParams params) {
-        return BASE_URL + "/api/artists/" + id + "/bios" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artistBio(Context context, String id, LookupQueryParams params) {
+        return BASE_URL + "/api/artists/" + id + "/bios" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String artistAlbums(String id) {
-        return BASE_URL + "/api/artists/" + id + "/albums" + "?client_id=" + clientID();
+    public static String artistAlbums(Context context, String id) {
+        return BASE_URL + "/api/artists/" + id + "/albums" + "?client_id=" + clientID(context);
     }
 
-    public static String artistAlbums(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/artists/" + id + "/albums" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artistAlbums(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/artists/" + id + "/albums" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String artistEssentialAlbums(String id) {
-        return BASE_URL + "/api/artists/" + id + "/essential_albums" + "?client_id=" + clientID();
+    public static String artistEssentialAlbums(Context context, String id) {
+        return BASE_URL + "/api/artists/" + id + "/essential_albums" + "?client_id=" + clientID(context);
     }
 
-    public static String artistEssentialAlbums(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/artists/" + id + "/essential_albums" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artistEssentialAlbums(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/artists/" + id + "/essential_albums" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String artistTracks(String id) {
-        return BASE_URL + "/api/artists/" + id + "/tracks" + "?client_id=" + clientID();
+    public static String artistTracks(Context context, String id) {
+        return BASE_URL + "/api/artists/" + id + "/tracks" + "?client_id=" + clientID(context);
     }
 
-    public static String artistTracks(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/artists/" + id + "/tracks" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artistTracks(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/artists/" + id + "/tracks" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String artistPlaylists(String id) {
-        return BASE_URL + "/api/artists/" + id + "/playlists" + "?client_id=" + clientID();
+    public static String artistPlaylists(Context context, String id) {
+        return BASE_URL + "/api/artists/" + id + "/playlists" + "?client_id=" + clientID(context);
     }
 
-    public static String artistPlaylists(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/artists/" + id + "/playlists" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String artistPlaylists(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/artists/" + id + "/playlists" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String activitiesList() {
-        return BASE_URL + "/api/activities" + "?client_id=" + clientID();
+    public static String activitiesList(Context context) {
+        return BASE_URL + "/api/activities" + "?client_id=" + clientID(context);
     }
 
-    public static String activitiesList(CollectionQueryParams params) {
-        return BASE_URL + "/api/activities" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String activitiesList(Context context, CollectionQueryParams params) {
+        return BASE_URL + "/api/activities" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String activity(String id) {
-        return BASE_URL + "/api/activities/" + id + "?client_id=" + clientID();
+    public static String activity(Context context, String id) {
+        return BASE_URL + "/api/activities/" + id + "?client_id=" + clientID(context);
     }
 
-    public static String activity(String id, LookupQueryParams params) {
-        return BASE_URL + "/api/activities/" + id + "?client_id=" + clientID() + '&' + params.toString();
+    public static String activity(Context context, String id, LookupQueryParams params) {
+        return BASE_URL + "/api/activities/" + id + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String activityEditorialPlaylists(String id) {
-        return BASE_URL + "/api/activities/" + id + "/editorial_playlists" + "?client_id=" + clientID();
+    public static String activityEditorialPlaylists(Context context, String id) {
+        return BASE_URL + "/api/activities/" + id + "/editorial_playlists" + "?client_id=" + clientID(context);
     }
 
-    public static String activityEditorialPlaylists(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/activities/" + id + "/editorial_playlists" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String activityEditorialPlaylists(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/activities/" + id + "/editorial_playlists" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String albumList() {
-        return BASE_URL + "/api/albums" + "?client_id=" + clientID();
+    public static String albumList(Context context) {
+        return BASE_URL + "/api/albums" + "?client_id=" + clientID(context);
     }
 
-    public static String albumList(CollectionQueryParams params) {
-        return BASE_URL + "/api/albums" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String albumList(Context context, CollectionQueryParams params) {
+        return BASE_URL + "/api/albums" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String album(String id) {
-        return BASE_URL + "/api/albums/" + id + "?client_id=" + clientID();
+    public static String album(Context context, String id) {
+        return BASE_URL + "/api/albums/" + id + "?client_id=" + clientID(context);
     }
 
-    public static String album(String id, LookupQueryParams params) {
-        return BASE_URL + "/api/albums/" + id + "?client_id=" + clientID() + '&' + params.toString();
+    public static String album(Context context, String id, LookupQueryParams params) {
+        return BASE_URL + "/api/albums/" + id + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String albumArtists(String id) {
-        return BASE_URL + "/api/albums/" + id + "/artists" + "?client_id=" + clientID();
+    public static String albumArtists(Context context, String id) {
+        return BASE_URL + "/api/albums/" + id + "/artists" + "?client_id=" + clientID(context);
     }
 
-    public static String albumArtists(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/albums/" + id + "/artists" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String albumArtists(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/albums/" + id + "/artists" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String albumTracks(String id) {
-        return BASE_URL + "/api/albums/" + id + "/tracks" + "?client_id=" + clientID();
+    public static String albumTracks(Context context, String id) {
+        return BASE_URL + "/api/albums/" + id + "/tracks" + "?client_id=" + clientID(context);
     }
 
-    public static String albumTracks(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/albums/" + id + "/tracks" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String albumTracks(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/albums/" + id + "/tracks" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String albumReview(String id) {
-        return BASE_URL + "/api/albums/" + id + "/review" + "?client_id=" + clientID();
+    public static String albumReview(Context context, String id) {
+        return BASE_URL + "/api/albums/" + id + "/review" + "?client_id=" + clientID(context);
     }
 
-    public static String albumReviews(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/albums/" + id + "/reviews" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String albumReviews(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/albums/" + id + "/reviews" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String albumCompanionAlbums(String id) {
-        return BASE_URL + "/api/albums/" + id + "/companion_albums" + "?client_id=" + clientID();
+    public static String albumCompanionAlbums(Context context, String id) {
+        return BASE_URL + "/api/albums/" + id + "/companion_albums" + "?client_id=" + clientID(context);
     }
 
-    public static String albumCompanionAlbums(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/albums/" + id + "/companion_albums" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String albumCompanionAlbums(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/albums/" + id + "/companion_albums" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String imageUrl(String id, EntityType entity, ImageType type) {
-        return imageUrl(id, entity, type, ImageSize.MEDIUM);
+    public static String imageUrl(Context context, String id, EntityType entity, ImageType type) {
+        return imageUrl(context, id, entity, type, ImageSize.MEDIUM);
     }
 
-    public static String imageUrl(String id, EntityType entity, ImageType type, ImageSize size) {
+    public static String imageUrl(Context context, String id, EntityType entity, ImageType type, ImageSize size) {
         if (!imageTypeEntityValidation(type, entity)) {
             throw new IllegalArgumentException(entity + " does not have image type of " + type);
         } else {
-            return BASE_URL + "/api/" + entity.toString() + "/" + id + "/images/" + type.toString() + "?client_id=" + clientID() + "&size=" + size.toString();
+            return BASE_URL + "/api/" + entity.toString() + "/" + id + "/images/" + type.toString() + "?client_id=" + clientID(context) + "&size=" + size.toString();
         }
     }
 
@@ -195,45 +216,45 @@ public class UrlFactory {
         }
     }
 
-    public static String highlightsFeatured() {
-        return BASE_URL + "/api/discoveries/featured" + "?client_id=" + clientID();
+    public static String highlightsFeatured(Context context) {
+        return BASE_URL + "/api/discoveries/featured" + "?client_id=" + clientID(context);
     }
 
-    public static String highlightsFeatured(CollectionQueryParams params) {
-        return BASE_URL + "/api/discoveries/featured" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String highlightsFeatured(Context context, CollectionQueryParams params) {
+        return BASE_URL + "/api/discoveries/featured" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String highlightsEditorPicks() {
-        return BASE_URL + "/api/discoveries/editor_picks" + "?client_id=" + clientID();
+    public static String highlightsEditorPicks(Context context) {
+        return BASE_URL + "/api/discoveries/editor_picks" + "?client_id=" + clientID(context);
     }
 
-    public static String highlightsEditorPicks(CollectionQueryParams params) {
-        return BASE_URL + "/api/discoveries/editor_picks" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String highlightsEditorPicks(Context context, CollectionQueryParams params) {
+        return BASE_URL + "/api/discoveries/editor_picks" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String trackList() {
-        return BASE_URL + "/api/tracks" + "?client_id=" + clientID();
+    public static String trackList(Context context) {
+        return BASE_URL + "/api/tracks" + "?client_id=" + clientID(context);
     }
 
-    public static String trackList(CollectionQueryParams params) {
+    public static String trackList(Context context, CollectionQueryParams params) {
 
-        return BASE_URL + "/api/tracks" + "?client_id=" + clientID() + '&' + params.toString();
+        return BASE_URL + "/api/tracks" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String track(String id) {
-        return BASE_URL + "/api/tracks/" + id + "?client_id=" + clientID();
+    public static String track(Context context, String id) {
+        return BASE_URL + "/api/tracks/" + id + "?client_id=" + clientID(context);
     }
 
-    public static String track(String id, LookupQueryParams params) {
-        return BASE_URL + "/api/tracks/" + id + "?client_id=" + clientID() + '&' + params.toString();
+    public static String track(Context context, String id, LookupQueryParams params) {
+        return BASE_URL + "/api/tracks/" + id + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
-    public static String trackArtists(String id) {
-        return BASE_URL + "/api/tracks/" + id + "/artists" + "?client_id=" + clientID();
+    public static String trackArtists(Context context, String id) {
+        return BASE_URL + "/api/tracks/" + id + "/artists" + "?client_id=" + clientID(context);
     }
 
-    public static String trackArtists(String id, CollectionQueryParams params) {
-        return BASE_URL + "/api/tracks/" + id + "/artists" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String trackArtists(Context context, String id, CollectionQueryParams params) {
+        return BASE_URL + "/api/tracks/" + id + "/artists" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
     public static String playlistList(CollectionQueryParams params) {
@@ -291,8 +312,8 @@ public class UrlFactory {
         return BASE_URL + "/api/users/" + id + "/playlist_subscriptions" + '?' + params.toString();
     }
 
-    public static String searchPredictive(String searchText) {
-        return BASE_URL + SEARCH_PREDICTIVE + "?q=" + searchText + "&client_id=" + clientID();
+    public static String searchPredictive(Context context, String searchText) {
+        return BASE_URL + SEARCH_PREDICTIVE + "?q=" + searchText + "&client_id=" + clientID(context);
     }
 
     public static String genre(String id) {
@@ -343,12 +364,12 @@ public class UrlFactory {
         return BASE_URL + "/api/genres/" + id + "/playlists" + '?' + params.toString();
     }
 
-    public static String genresCollection() {
-        return BASE_URL + "/api/genres" + "?client_id=" + clientID();
+    public static String genresCollection(Context context) {
+        return BASE_URL + "/api/genres" + "?client_id=" + clientID(context);
     }
 
-    public static String genresCollection(CollectionQueryParams params) {
-        return BASE_URL + "/api/genres" + "?client_id=" + clientID() + '&' + params.toString();
+    public static String genresCollection(Context context, CollectionQueryParams params) {
+        return BASE_URL + "/api/genres" + "?client_id=" + clientID(context) + '&' + params.toString();
     }
 
     public enum EntityType {
