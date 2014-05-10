@@ -2,6 +2,7 @@ package com.freethinking.beats.sdk.login;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -15,6 +16,7 @@ import com.freethinking.beats.sdk.data.Me;
 import com.freethinking.beats.sdk.mappers.AuthorizationMapper;
 import com.freethinking.beats.sdk.mappers.MeMapper;
 import com.freethinking.beats.sdk.network.NetworkAdapter;
+import com.freethinking.beats.sdk.network.NetworkParts;
 import com.freethinking.beats.sdk.network.UrlFactory;
 
 import java.util.HashMap;
@@ -38,9 +40,7 @@ public class LoginActivity extends Activity {
         webView = (WebView) findViewById(R.id.activity_login_web_view);
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description,
-                                        String failingUrl) {
-
-            }
+                                        String failingUrl) { }
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("musicflow") && url.contains("code")) {
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity {
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("user_state", state).commit();
                     getSharedPreferences(preferencesKey, MODE_PRIVATE).edit().putString("access_code_scope", scope).commit();
 
-                    AuthorizationRequest body = new AuthorizationRequest(UrlFactory.clientSecret(), UrlFactory.clientID(), "http://www.musicflow.com", code, "authorization_code", false);
+                    AuthorizationRequest body = new AuthorizationRequest(UrlFactory.clientSecret(getApplicationContext()), UrlFactory.clientID(getApplicationContext()), "http://www.musicflow.com", code, "authorization_code", false);
 
                     authNetworkRequest = new AuthNetworkRequest(getApplicationContext(), body);
                     authNetworkRequest.execute(UrlFactory.obtainToken());
@@ -64,18 +64,28 @@ public class LoginActivity extends Activity {
                 }
             }
         });
-        webView.loadUrl("https://partner.api.beatsmusic.com/v1/oauth2/authorize?response_type=code&redirect_uri=http%3A%2F%2Fwww.musicflow.com&client_id=" + UrlFactory.clientID());
+        webView.loadUrl("https://partner.api.beatsmusic.com/v1/oauth2/authorize?response_type=code&redirect_uri=http%3A%2F%2Fwww.musicflow.com&client_id=" + UrlFactory.clientID(this));
     }
 
     public void completeSignIn() {
         Toast.makeText(this, "Welcome to Music Flow", Toast.LENGTH_SHORT).show();
+        Intent returnIntent = new Intent();
+        String preferencesKey = "beats_sdk_user";
+        returnIntent.putExtra("access_code", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("access_code", ""));
+        returnIntent.putExtra("user_state", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("user_state", ""));
+        returnIntent.putExtra("access_code_scope", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("access_code_scope", ""));
+        returnIntent.putExtra("access_token", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("access_token", ""));
+        returnIntent.putExtra("refresh_token", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("refresh_token", ""));
+        returnIntent.putExtra("access_expires_at", getSharedPreferences(preferencesKey, MODE_PRIVATE).getLong("access_expires_at", System.currentTimeMillis()));
+        returnIntent.putExtra("user_id", getSharedPreferences(preferencesKey, MODE_PRIVATE).getString("user_id", ""));
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 
     protected class MeNetworkRequest extends NetworkAdapter {
 
         public MeNetworkRequest(Context context) {
-            super(context, new MeMapper(), NetworkAdapter.RequestType.GET, new HashMap<String, String>(), me);
+            super(context, new MeMapper(), NetworkParts.RequestType.GET, new HashMap<String, String>(), me);
         }
 
         @Override
@@ -95,7 +105,7 @@ public class LoginActivity extends Activity {
     protected class AuthNetworkRequest extends NetworkAdapter {
 
         public AuthNetworkRequest(Context context, AuthorizationRequest body) {
-            super(context, new AuthorizationMapper(), NetworkAdapter.RequestType.POST, new HashMap<String, String>(), body, authorization);
+            super(context, new AuthorizationMapper(), NetworkParts.RequestType.POST, new HashMap<String, String>(), body, authorization);
         }
 
         @Override
