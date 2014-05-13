@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class UrlFactory {
     public static final String BASE_URL = "https://partner.api.beatsmusic.com/v1";
+    public static final String BASE_PRIVATE_URL = "https://api.beatsmusic.com";
     public static final String SEARCH_PREDICTIVE = "/api/search/predictive";
 
     public final int OFFSET_DEFAULT = 0;
@@ -370,6 +371,16 @@ public class UrlFactory {
 
     public static String genresCollection(Context context, CollectionQueryParams params) {
         return BASE_URL + "/api/genres" + "?client_id=" + clientID(context) + '&' + params.toString();
+    }
+
+    public static String audioUrl(String trackId) {
+        return BASE_URL + "/api/tracks/" + trackId + "/audio" +
+                "?acquire=1";
+    }
+
+    public static String audioResourceUrl(String ref) {
+        String[] refParts = ref.split(":");
+        return BASE_URL + refParts[1];
     }
 
     public enum EntityType {

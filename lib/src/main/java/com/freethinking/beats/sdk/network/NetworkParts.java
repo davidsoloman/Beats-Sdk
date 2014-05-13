@@ -30,6 +30,8 @@ import java.util.Map;
 
 public class NetworkParts {
 
+    private static final String PRIVATE_TOKEN = "SmBSQ6++KwIYNNW0JUxzIyu/7IYmTSSAsiXBzY1rttnhXUDs9lxniEdwcKAibLiYUAQGScI13Ck=";
+
     public enum RequestType {
         GET,
         PUT,
@@ -101,7 +103,7 @@ public class NetworkParts {
             StringEntity body = new StringEntity(baseJsonString);
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response;
+            HttpResponse httpResponse;
             String responseString;
 
             HttpPost post = new HttpPost(UrlFactory.obtainToken());
@@ -109,17 +111,17 @@ public class NetworkParts {
                 post.addHeader(key, headers.get(key));
             }
             post.setEntity(body);
-            response = httpclient.execute(post);
+            httpResponse = httpclient.execute(post);
 
-            StatusLine statusLine = response.getStatusLine();
+            StatusLine statusLine = httpResponse.getStatusLine();
 
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
-                response.getEntity().writeTo(out);
+                httpResponse.getEntity().writeTo(out);
                 out.close();
                 responseString = out.toString();
             } else {
-                response.getEntity().getContent().close();
+                httpResponse.getEntity().getContent().close();
                 throw new IOException(statusLine.getReasonPhrase());
             }
 
@@ -158,8 +160,11 @@ public class NetworkParts {
         String responseString = null;
         if (!canceled) {
             HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response;
+            HttpResponse httpResponse;
 
+//            if (url.contains("https://api.beatsmusic.com/api/tracks")) {
+//                headers.put("Authorization", "Bearer " + PRIVATE_TOKEN);
+//            } else
             if (authRequired()) {
                 String preferencesKey = "beats_sdk_user";
                 Long accessExpires = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getLong("access_expires_at", System.currentTimeMillis());
@@ -179,7 +184,7 @@ public class NetworkParts {
                         for (String key : headers.keySet()) {
                             get.addHeader(key, headers.get(key));
                         }
-                        response = httpclient.execute(get);
+                        httpResponse = httpclient.execute(get);
                         break;
                     case PUT:
                         HttpPut put = new HttpPut(url);
@@ -187,7 +192,7 @@ public class NetworkParts {
                             put.addHeader(key, headers.get(key));
                         }
                         put.setEntity(body);
-                        response = httpclient.execute(put);
+                        httpResponse = httpclient.execute(put);
                         break;
                     case POST:
                         HttpPost post = new HttpPost(url);
@@ -195,26 +200,26 @@ public class NetworkParts {
                             post.addHeader(key, headers.get(key));
                         }
                         post.setEntity(body);
-                        response = httpclient.execute(post);
+                        httpResponse = httpclient.execute(post);
                         break;
                     case DELETE:
                         HttpDelete delete = new HttpDelete(url);
                         for (String key : headers.keySet()) {
                             delete.addHeader(key, headers.get(key));
                         }
-                        response = httpclient.execute(delete);
+                        httpResponse = httpclient.execute(delete);
                         break;
                     default:
-                        response = httpclient.execute(new HttpGet(url));
+                        httpResponse = httpclient.execute(new HttpGet(url));
                 }
-                StatusLine statusLine = response.getStatusLine();
+                StatusLine statusLine = httpResponse.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
+                    httpResponse.getEntity().writeTo(out);
                     out.close();
                     responseString = out.toString();
                 } else {
-                    response.getEntity().getContent().close();
+                    httpResponse.getEntity().getContent().close();
                     throw new IOException(statusLine.getReasonPhrase());
                 }
             } catch (ClientProtocolException e) {
