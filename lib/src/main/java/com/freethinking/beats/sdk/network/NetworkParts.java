@@ -30,8 +30,6 @@ import java.util.Map;
 
 public class NetworkParts {
 
-    private static final String PRIVATE_TOKEN = "SmBSQ6++KwIYNNW0JUxzIyu/7IYmTSSAsiXBzY1rttnhXUDs9lxniEdwcKAibLiYUAQGScI13Ck=";
-
     public enum RequestType {
         GET,
         PUT,
