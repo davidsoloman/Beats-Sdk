@@ -30,8 +30,6 @@ import java.util.Map;
 
 public class NetworkParts {
 
-    private static final String PRIVATE_TOKEN = "SmBSQ6++KwIYNNW0JUxzIyu/7IYmTSSAsiXBzY1rttnhXUDs9lxniEdwcKAibLiYUAQGScI13Ck=";
-
     public enum RequestType {
         GET,
         PUT,
@@ -162,9 +160,6 @@ public class NetworkParts {
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse httpResponse;
 
-//            if (url.contains("https://api.beatsmusic.com/api/tracks")) {
-//                headers.put("Authorization", "Bearer " + PRIVATE_TOKEN);
-//            } else
             if (authRequired()) {
                 String preferencesKey = "beats_sdk_user";
                 Long accessExpires = context.getSharedPreferences(preferencesKey, Context.MODE_PRIVATE).getLong("access_expires_at", System.currentTimeMillis());
